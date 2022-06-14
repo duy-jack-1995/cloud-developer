@@ -46,3 +46,8 @@ Prevent requests without valid authentication headers.
 
 Add your own domain name and have it point to the running services (try adding a subdomain name to point to the processing server)
 > !NOTE: Domain names are not included in AWS’ free tier and will incur a cost.
+eb domain: image-filter-9563-7558-5952-course-2.us-east-1.elasticbeanstalk.com
+
+### Testing API
+
+I use POSTman to verify my api endpoint: http://localhost:8082/filteredimage?image_url=https://www.lamborghini.com/sites/it-en/files/DAM/lamborghini/news/2022/06_09_tecnica/corpo_1.jpg
