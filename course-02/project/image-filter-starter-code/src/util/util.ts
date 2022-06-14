@@ -1,5 +1,6 @@
-import fs from "fs";
-import Jimp = require("jimp");
+import fs from 'fs';
+import Jimp = require('jimp');
+import https = require('https')
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -21,6 +22,26 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
         .write(__dirname + outpath, (img) => {
           resolve(__dirname + outpath);
         });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+// isValidUrl
+// useful to check is existing image from url
+export async function isValidUrl(image_url: string): Promise<boolean> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      https.get(image_url, function (res) {
+        if (res && res.statusCode != 404) {
+          console.log('Image found');
+          return resolve(true);
+        } else {
+          console.log('Image not found');
+          return resolve(false);
+        }
+      });
     } catch (error) {
       reject(error);
     }
