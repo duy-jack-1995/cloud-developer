@@ -51,3 +51,8 @@ eb domain: image-filter-9563-7558-5952-course-2.us-east-1.elasticbeanstalk.com
 ### Testing API
 
 I use POSTman to verify my api endpoint: http://localhost:8082/filteredimage?image_url=https://www.lamborghini.com/sites/it-en/files/DAM/lamborghini/news/2022/06_09_tecnica/corpo_1.jpg
+
+## Github Repo
+
+https://github.com/duy-jack-1995/cloud-developer/tree/develop/course-02/project/image-filter-starter-code
+> !NOTE: branch master is main branch develop branch is for development.
