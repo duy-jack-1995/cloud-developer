@@ -4,7 +4,6 @@ import { verify, decode } from 'jsonwebtoken'
 import { createLogger } from '../../utils/logger'
 import { Jwt } from '../../auth/Jwt'
 import { JwtPayload } from '../../auth/JwtPayload'
-import Axios from 'axios'
 
 // TODO: Provide a URL that can be used to download a certificate that can be used
 // to verify JWT token signature.
@@ -60,12 +59,14 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   // TODO: Implement token verification
   // You should implement it similarly to how it was implemented for the exercise for the lesson 5
   // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
-  verify(token, getKey, { algorithms: ['HS256'] }, function (err, decodeed: object) {
+  verify(token, populateKey, { algorithms: ['HS256'] }, function (err, decodeed: object) {
+    // Checking is valid token here
     if (err) {
       console.log('Error: ', err)
       throw new Error('Invalid JWT token!')
     }
     const jwtPayload = jwt.payload
+    // Checking is valid token here
     if (decodeed['sub'] !== jwt.payload.sub || decodeed['iss'] !== jwtPayload.iss || decodeed['iat'] !== jwtPayload.iat || decodeed['exp'] !== jwtPayload.exp) {
       throw new Error('Incorrect JWT token!')
     }
@@ -87,13 +88,15 @@ function getToken(authHeader: string): string {
   return token
 }
 
-function getKey(header, callback) {
+function populateKey(header, callback) {
+  // Required rsa key
   const jwksClient = require('jwks-rsa');
   const client = jwksClient({ jwksUri: jwksUrl })
 
+  // Get signing key value
   client.getSigningKey(header.pid, function (err, key) {
     if (err) { console.log('Error: ', err) }
-    const signingKey = key.publicKey || key.rsaPublicKey;
-    callback(null, signingKey);
+    const signing_key = key.publicKey || key.rsaPublicKey;
+    callback(null, signing_key);
   });
 }
