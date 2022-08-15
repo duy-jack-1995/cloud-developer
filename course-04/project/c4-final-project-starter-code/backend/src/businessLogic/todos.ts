@@ -1,25 +1,21 @@
-// import { TodosAccess } from './todosAcess'
-import { TodoAccess } from '../dataLayer/todoAcess'
-//import { AttachmentUtils } from './attachmentUtils';
-//import { TodoItem } from '../models/TodoItem'
-import { CreateTodoRequest } from '../requests/CreateTodoRequest'
-import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
-//import { createLogger } from '../utils/logger'
-import * as uuid from 'uuid'
-//import * as createError from 'http-errors'
-import { createAttachmentUrl } from './attachmentUtils'
+import * as uuid from 'uuid';
 
-const todosAcess = new TodoAccess()
+import {CreateTodoRequest} from "../requests/CreateTodoRequest";
+import {UpdateTodoRequest} from "../requests/UpdateTodoRequest";
+import {TodoAccess} from "../dataLayer/todoAcess";
+import { createAttachmentUrl } from '../fileStorage/attachmentUtils';
+
+const toDoAccess = new TodoAccess();
 
 export async function getTodosForUser(userId: string) {
-    return await todosAcess.getUserTodos(userId)
+    return await toDoAccess.getUserTodos(userId)
 }
 
 export async function createTodo(createTodoRequest: CreateTodoRequest, userId: string) {
     const todoId = uuid.v4()
     const createdAt = new Date().toISOString()
 
-    return await todosAcess.createTodo({
+    return await toDoAccess.createTodo({
         todoId: todoId,
         userId: userId,
         createdAt: createdAt,
@@ -32,8 +28,7 @@ export async function createTodo(createTodoRequest: CreateTodoRequest, userId: s
 export async function updateTodo(updateTodoRequest: UpdateTodoRequest, userId: string, todoId: string) {
     const createdAt = new Date().toISOString()
 
-    // TODO need to update
-    return await todosAcess.updateTodo(
+    return await toDoAccess.updateTodo(
         {
             name: updateTodoRequest.name,
             dueDate: updateTodoRequest.dueDate,
@@ -45,9 +40,9 @@ export async function updateTodo(updateTodoRequest: UpdateTodoRequest, userId: s
 }
 
 export async function updatePresignedUrlForTodoItem(userId: string, todoId: string, attachmentId: string) {
-    const todoItem = await todosAcess.getTodoByIdForUser(userId, todoId)
+    const todoItem = await toDoAccess.getTodoByIdForUser(userId, todoId)
     const attachmentUrl = await createAttachmentUrl(attachmentId)
-    return await todosAcess.updatePresignedUrlForTodoItem(
+    return await toDoAccess.updatePresignedUrlForTodoItem(
         {
             name: todoItem.name,
             dueDate: todoItem.dueDate,
@@ -60,5 +55,5 @@ export async function updatePresignedUrlForTodoItem(userId: string, todoId: stri
 }
 
 export async function deleteTodo(todoId: string, userId: string) {
-    return await todosAcess.deleteTodo(todoId, userId)
+    return await toDoAccess.deleteTodo(todoId, userId)
 }
