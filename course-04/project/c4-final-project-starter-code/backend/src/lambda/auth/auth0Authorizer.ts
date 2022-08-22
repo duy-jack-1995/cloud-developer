@@ -10,6 +10,7 @@ import { JwtPayload } from '../../auth/JwtPayload'
 // To get this URL you need to go to an Auth0 page -> Show Advanced Settings -> Endpoints -> JSON Web Key Set
 
 const jwksUrl = 'https://dev--0mhheds.us.auth0.com/.well-known/jwks.json'
+            
 const logger = createLogger('auth')
 
 export const handler = async (
@@ -53,12 +54,9 @@ export const handler = async (
 }
 
 async function verifyToken(authHeader: string): Promise<JwtPayload> {
+
   const token = getToken(authHeader)
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
-
-  // TODO: Implement token verification
-  // You should implement it similarly to how it was implemented for the exercise for the lesson 5
-  // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
   verify(token, populateKey, { algorithms: ['HS256'] }, function (err, decodeed: object) {
     // Checking is valid token here
     if (err) {
@@ -70,9 +68,12 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
     if (decodeed['sub'] !== jwt.payload.sub || decodeed['iss'] !== jwtPayload.iss || decodeed['iat'] !== jwtPayload.iat || decodeed['exp'] !== jwtPayload.exp) {
       throw new Error('Incorrect JWT token!')
     }
+    
+    return jwtPayload
   })
 
   const jwtPayload = jwt.payload
+  // return Token here
   return jwtPayload
 }
 
