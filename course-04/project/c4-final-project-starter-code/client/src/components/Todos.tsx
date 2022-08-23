@@ -11,7 +11,9 @@ import {
   Icon,
   Input,
   Image,
-  Loader
+  Loader,
+  Card,
+  Segment
 } from 'semantic-ui-react'
 
 import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
@@ -127,7 +129,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="Enter the new task name ..."
             onChange={this.handleNameChange}
           />
         </Grid.Column>
@@ -159,48 +161,29 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   renderTodosList() {
     return (
       <Grid padded>
-        {this.state.todos.map((todo, pos) => {
-          return (
-            <Grid.Row key={todo.todoId}>
-              <Grid.Column width={1} verticalAlign="middle">
-                <Checkbox
-                  onChange={() => this.onTodoCheck(pos)}
-                  checked={todo.done}
-                />
-              </Grid.Column>
-              <Grid.Column width={10} verticalAlign="middle">
-                {todo.name}
-              </Grid.Column>
-              <Grid.Column width={3} floated="right">
-                {todo.dueDate}
-              </Grid.Column>
-              <Grid.Column width={1} floated="right">
-                <Button
-                  icon
-                  color="blue"
-                  onClick={() => this.onEditButtonClick(todo.todoId)}
-                >
-                  <Icon name="pencil" />
-                </Button>
-              </Grid.Column>
-              <Grid.Column width={1} floated="right">
-                <Button
-                  icon
-                  color="red"
-                  onClick={() => this.onTodoDelete(todo.todoId)}
-                >
-                  <Icon name="delete" />
-                </Button>
-              </Grid.Column>
-              {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
-              )}
-              <Grid.Column width={16}>
-                <Divider />
-              </Grid.Column>
-            </Grid.Row>
-          )
-        })}
+        <Card.Group>
+          {this.state.todos.map((todo, pos) => {
+            return (
+              <Card key={todo.todoId}>
+                <Image src={todo.attachmentUrl} wrapped ui={false} />
+                <Card.Content>
+                  <Card.Header>{todo.name}</Card.Header>
+                  <Card.Header>{todo.dueDate}</Card.Header>
+                </Card.Content>
+                <Card.Content extra>
+                  <div className='ui two buttons'>
+                    <Button basic color='blue' onClick={() => this.onEditButtonClick(todo.todoId)}>
+                      <Icon name="pencil" />Edit
+                    </Button>
+                    <Button basic color='red' onClick={() => this.onTodoDelete(todo.todoId)}>
+                      <Icon name="delete" />Delete
+                    </Button>
+                  </div>
+                </Card.Content>
+              </Card>
+            )
+          })}
+        </Card.Group>
       </Grid>
     )
   }
