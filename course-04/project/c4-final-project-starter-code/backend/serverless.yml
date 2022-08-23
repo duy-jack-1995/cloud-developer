@@ -8,6 +8,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-aws-documentation
   - serverless-plugin-tracing
+  - serverless-reqvalidator-plugin
 
 provider:
   name: aws
@@ -88,6 +89,7 @@ functions:
       - http:
           method: post
           path: todos
+          reqValidatorName: RequestBodyValidator
           cors: true
           authorizer: Auth
           documentation:
@@ -118,8 +120,9 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
+          - dynamodb:Query
           - dynamodb:UpdateItem
-        Resource: !GetAtt TodosTable.Arn
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -228,3 +231,12 @@ resources:
               Action: '*'
               Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
