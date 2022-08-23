@@ -4,7 +4,6 @@ import update from 'immutability-helper'
 import * as React from 'react'
 import {
   Button,
-  Checkbox,
   Divider,
   Grid,
   Header,
@@ -12,8 +11,7 @@ import {
   Input,
   Image,
   Loader,
-  Card,
-  Segment
+  Card
 } from 'semantic-ui-react'
 
 import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
