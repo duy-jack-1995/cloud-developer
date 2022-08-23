@@ -28,7 +28,7 @@ interface TodosState {
   newTodoName: string
   loadingTodos: boolean
   newTodoDescription: string
-  newTodoPoint : number
+  newTodoPoint: number
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
@@ -37,7 +37,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     newTodoName: '',
     loadingTodos: true,
     newTodoDescription: "",
-    newTodoPoint : 0
+    newTodoPoint: 0
   }
 
   handleDesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,8 +153,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             action={{
               color: 'teal',
               labelPosition: 'left',
-              icon: 'star',
-              content: 'Des'
+              icon: 'audio description',
+              content: 'Description'
             }}
             fluid
             actionPosition="left"
@@ -168,7 +168,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             action={{
               color: 'teal',
               labelPosition: 'left',
-              icon: 'heart',
+              icon: 'calculator',
               content: 'Point (days) '
             }}
             fluid
