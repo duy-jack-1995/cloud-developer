@@ -39,7 +39,9 @@ export async function updateTodo(updateTodoRequest: UpdateTodoRequest, userId: s
         {
             name: updateTodoRequest.name,
             dueDate: updateTodoRequest.dueDate,
-            done: updateTodoRequest.done
+            done: updateTodoRequest.done,
+            description: updateTodoRequest.description,
+            point: updateTodoRequest.point
         },
         userId,
         todoId
@@ -54,7 +56,9 @@ export async function updatePresignedUrlForTodoItem(userId: string, todoId: stri
             name: todoItem.name,
             dueDate: todoItem.dueDate,
             done: todoItem.done,
-            attachmentUrl: attachmentUrl
+            attachmentUrl: attachmentUrl,
+            description: todoItem.description,
+            point: todoItem.point
         },
         userId,
         todoId

@@ -11,12 +11,20 @@
     },
     "done": {
       "type": "boolean"
+    },
+    "description": {
+      "type": "string"
+    },
+    "point": {
+      "type": "number"
     }
   },
   "required": [
     "name",
     "dueDate",
-    "done"
+    "done",
+    "description",
+    "point"
   ],
   "additionalProperties": false
 }

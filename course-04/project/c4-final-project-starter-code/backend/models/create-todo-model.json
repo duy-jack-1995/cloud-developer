@@ -9,11 +9,19 @@
     },
     "dueDate": {
       "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "point": {
+      "type": "number"
     }
   },
   "required": [
     "name",
-    "dueDate"
+    "dueDate",
+    "description",
+    "point"
   ],
   "additionalProperties": false
 }

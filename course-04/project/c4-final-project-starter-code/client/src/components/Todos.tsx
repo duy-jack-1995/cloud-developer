@@ -27,13 +27,25 @@ interface TodosState {
   todos: Todo[]
   newTodoName: string
   loadingTodos: boolean
+  newTodoDescription: string
+  newTodoPoint : number
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     todos: [],
     newTodoName: '',
-    loadingTodos: true
+    loadingTodos: true,
+    newTodoDescription: "",
+    newTodoPoint : 0
+  }
+
+  handleDesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ newTodoDescription: event.target.value })
+  }
+
+  handlePointChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ newTodoPoint: parseFloat(event.target.value) })
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +61,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       const dueDate = this.calculateDueDate()
       const newTodo = await createTodo(this.props.auth.getIdToken(), {
         name: this.state.newTodoName,
-        dueDate
+        dueDate,
+        description: this.state.newTodoDescription,
+        point: this.state.newTodoPoint,
       })
       this.setState({
         todos: [...this.state.todos, newTodo],
@@ -77,7 +91,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
         name: todo.name,
         dueDate: todo.dueDate,
-        done: !todo.done
+        done: !todo.done,
+        description: todo.description,
+        point: todo.point
       })
       this.setState({
         todos: update(this.state.todos, {
@@ -131,6 +147,37 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             onChange={this.handleNameChange}
           />
         </Grid.Column>
+
+        <Grid.Column width={16}>
+          <Input
+            action={{
+              color: 'teal',
+              labelPosition: 'left',
+              icon: 'star',
+              content: 'Des'
+            }}
+            fluid
+            actionPosition="left"
+            placeholder="Write detail about task here ..."
+            onChange={this.handleDesChange}
+          />
+        </Grid.Column>
+
+        <Grid.Column width={16}>
+          <Input
+            action={{
+              color: 'teal',
+              labelPosition: 'left',
+              icon: 'heart',
+              content: 'Point (days) '
+            }}
+            fluid
+            actionPosition="left"
+            placeholder="Number of story point here ..."
+            onChange={this.handlePointChange}
+          />
+        </Grid.Column>
+
         <Grid.Column width={16}>
           <Divider />
         </Grid.Column>
@@ -167,6 +214,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 <Card.Content>
                   <Card.Header>{todo.name}</Card.Header>
                   <Card.Header>{todo.dueDate}</Card.Header>
+                  <Card.Header>{todo.description}</Card.Header>
+                  <Card.Header>{todo.point}</Card.Header>
                 </Card.Content>
                 <Card.Content extra>
                   <div className='ui two buttons'>
